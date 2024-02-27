@@ -7,14 +7,14 @@ from app.quiz.university import views as university_manager
 api = APIRouter(prefix="/quiz/api",)
 
 
-api.include_router(
-    health.router,
-    prefix="/health",
-    tags=["Health"],
-)
+# api.include_router(
+#     health.router,
+#     prefix="/health",
+#     tags=["Health"],
+# )
 api.include_router(
     quiz.router,
 )
-api.include_router(
-    university_manager.router,
-)
+# api.include_router(
+#     university_manager.router,
+# )

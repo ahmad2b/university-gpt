@@ -21,20 +21,20 @@ router.include_router(
     tags=["Questions"],
 )
 
-router.include_router(
-    users.router,
-    prefix="/user",
-    tags=["User"],
-)
+# router.include_router(
+#     users.router,
+#     prefix="/user",
+#     tags=["User"],
+# )
 router.include_router(
     quizzes.router
 )
 
-router.include_router(
-    answersheets.router,
-    prefix="/answersheet",
-    tags=["AnswerSheet"],
-)
+# router.include_router(
+#     answersheets.router,
+#     prefix="/answersheet",
+#     tags=["AnswerSheet"],
+# )
 
 # router.include_router(
 #     grades.router,
