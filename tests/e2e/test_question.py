@@ -2,47 +2,8 @@ from app.core.database import get_session
 from asgi import app
 from httpx import AsyncClient
 
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from dotenv import load_dotenv, find_dotenv
-from sqlalchemy.ext.asyncio import async_sessionmaker
-
-import pytest
-import sys
-import os
-sys.path.append(os.getcwd())
-
-
-# Load environment variables
-load_dotenv(find_dotenv())
-
-# Database connection string
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if not DATABASE_URL:
-    raise ValueError("DATABASE_URL environment variable not set")
-
-# Create an asynchronous engine for the database
-engine = create_async_engine(DATABASE_URL, echo=True,
-                             future=True,
-                             pool_size=20,
-                             max_overflow=20,
-                             pool_recycle=3600)
-
-
-async def async_db_session():
-    """Fixture to provide a database session for tests, automatically handling context."""
-    async_session = async_sessionmaker(
-        engine, class_=AsyncSession, expire_on_commit=False)
-    async with async_session() as session:
-        yield session
-
-# app.dependency_overrides[get_session] = async_db_session
-# client = TestClient(api)
-
-
 @pytest.mark.asyncio
-async def test_question_creation_deletion():
-    app.dependency_overrides[get_session] = async_db_session
+async def test_question_creation_deletion(async_db_session):
     async with AsyncClient(app=api, base_url="http://localhost:8080") as ac:
 
         # Create a topic

@@ -1,40 +1,13 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from dotenv import load_dotenv, find_dotenv
-from sqlalchemy.ext.asyncio import async_sessionmaker
-
 import pytest
-import sys
-import os
-sys.path.append(os.getcwd())
 
 from app.quiz.question.crud import (add_question, read_questions, read_questions_by_type, get_question_by_id, update_question, delete_question,
                                     add_mcq_option, read_mcq_options, get_mcq_option_by_id, update_mcq_option, delete_mcq_option)
+
 from app.quiz.question.models import QuestionBankCreate, QuestionBankUpdate, MCQOptionCreate, MCQOptionUpdate
+
 from app.quiz.topic.crud import create_topic, delete_topic
 from app.quiz.topic.models import TopicCreate
 
-# Load environment variables
-load_dotenv(find_dotenv())
-
-# Database connection string
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if not DATABASE_URL:
-    raise ValueError("DATABASE_URL environment variable not set")
-
-# Create an asynchronous engine for the database
-engine = create_async_engine(DATABASE_URL, echo=True,
-    future=True,
-    pool_size=20,
-    max_overflow=20,
-    pool_recycle=3600)
-
-@pytest.fixture(scope="class")
-async def async_db_session():
-    """Fixture to provide a database session for tests, automatically handling context."""
-    async_session = async_sessionmaker(engine, class_ = AsyncSession, expire_on_commit=False)
-    async with async_session() as session:
-        yield session
 
 # Fixture for creating a question
 @pytest.fixture(scope="class")
